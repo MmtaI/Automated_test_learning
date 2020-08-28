@@ -1,6 +1,7 @@
 import unittest
-from Api_test.api_unittest import Testcase
 from BeautifulReport import BeautifulReport
+import sys
+sys.path.append('../')
 
 
 # 添加测试用例

@@ -1,4 +1,3 @@
-from Api_test.open_excel import excel_yaml
 import requests
 import json
 import jsonpath
