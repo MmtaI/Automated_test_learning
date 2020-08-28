@@ -1,0 +1,40 @@
+- url: http://39.98.138.157:5000/api/login
+  body: '{"username":"admin","password":"123456"}'
+  header: '{"content-type": "application/json"}'
+  method: post
+  methodtype: json
+  expect: success
+  jsonpath: $.msg
+  dependency: loginvar
+- url: http://39.98.138.157:5000/api/getproductinfo?productid=8888
+  body:
+  header:
+  method: get
+  methodtype: url
+  expect: 200
+  jsonpath: $.httpstatus
+  dependency: productvar
+- url: http://39.98.138.157:5000/api/getuserinfo
+  body:
+  header: '{"token": "$loginvar.token$"}'
+  method: get
+  methodtype: url
+  expect: 200
+  jsonpath: $.httpstatus
+  dependency: uservar
+- url: http://39.98.138.157:5000/api/addcart
+  body: '{"userid":$uservar.data[0].userid$,"openid":"$uservar.data[0].openid$","productid":$productvar.data[0].productid$}'
+  header: '{"token": "$loginvar.token$","content-type": "application/json"}'
+  method: post
+  methodtype: json
+  expect: 200
+  jsonpath: $.httpstatus
+  dependency: cartinfo
+- url: http://39.98.138.157:5000/api/createorder
+  body: '{"cartid":$cartinfo.data[0].cartid$,"openid":"$uservar.data[0].openid$","productid":$productvar.data[0].productid$,"userid":$uservar.data[0].userid$}'
+  header: '{"token": "$loginvar.token$","content-type": "application/json"}'
+  method: post
+  methodtype: json
+  expect: 200
+  jsonpath: $.httpstatus
+  dependency: /
